@@ -9,9 +9,9 @@ class Ecs {
   final int maxEntity;
   final int maxComponents;
   final int maxSystems;
-  ComponentManager componentManager;
-  EntityManager entityManager;
-  SystemManager systemManager;
+  final ComponentManager componentManager;
+  final EntityManager entityManager;
+  final SystemManager systemManager;
 
   Ecs({this.maxEntity = 1024, this.maxComponents = 32, this.maxSystems = 16})
       : componentManager = ComponentManager(maxComponents),
@@ -86,8 +86,7 @@ class Ecs {
   Signature createSignature(List<ComponentId> list) {
     Signature signature = 0;
     for (int i = 0; i < list.length; i++) {
-      var id = list[i];
-      signature |= 1 << id; //enable
+      signature |= 1 << list[i]; //enable
     }
     return signature;
   }

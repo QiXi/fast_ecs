@@ -23,7 +23,7 @@ class ComponentArray<T extends Component> {
   }
 
   void add(Entity entity) {
-    assert(entity <= size, 'Entity out of range.');
+    assert(_nextIndex < capacity, 'Too many entities in existence.');
     var newIndex = _nextIndex;
     entityToIndexList[entity] = newIndex;
     indexToEntityList[newIndex] = entity;
