@@ -23,14 +23,14 @@ class EntityManager {
   }
 
   void destroyEntity(Entity entity) {
-    assert(entity < size, 'Entity out of range.');
+    assert(entity < capacity, 'Entity out of range.');
     availableEntities.addLast(entity);
     signatures[entity] = 0; // disable
     _nextIndex--;
   }
 
   Signature getSignature(Entity entity) {
-    assert(entity < size, 'Entity out of range.');
+    assert(entity < capacity, 'Entity out of range.');
     return signatures[entity];
   }
 

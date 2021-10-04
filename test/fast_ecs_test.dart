@@ -3,111 +3,117 @@ import 'package:test/test.dart';
 
 void main() {
   int maxEntity;
-  late Ecs world;
+  late Ecs ecs;
   ComponentId component1Id = -1;
   ComponentId component2Id = -1;
+
   group('register', () {
     setUp(() {
-      maxEntity = 10;
-      world = Ecs(maxEntity: maxEntity);
+      ecs = Ecs(maxEntity: 10);
     });
 
     test('Components', () {
-      expect(world.componentManager.size, 0);
-      component1Id = world.registerComponent<Component1>((int index) => Component1(), 32);
+      expect(ecs.componentManager.size, 0);
+      component1Id = ecs.registerComponent<Component1>((int index) => Component1(), 32);
       expect(component1Id, 0);
-      expect(world.componentManager.size, 1);
-      component2Id = world.registerComponent<Component2>((int index) => Component2(), 32);
+      expect(ecs.componentManager.size, 1);
+      component2Id = ecs.registerComponent<Component2>((int index) => Component2(), 32);
       expect(component2Id, 1);
-      expect(world.componentManager.size, 2);
+      expect(ecs.componentManager.size, 2);
     });
 
     test('Systems', () {
-      world.registerComponent<Component1>((int index) => Component1(), 32);
-      world.registerComponent<Component2>((int index) => Component2(), 32);
+      ecs.registerComponent<Component1>((int index) => Component1(), 32);
+      ecs.registerComponent<Component2>((int index) => Component2(), 32);
       //
-      expect(world.systemManager.size, 0);
-      var system1Id = world.registerSystem<System1>(() => System1());
-      expect(world.systemManager.size, 1);
-      expect(world.systemManager.getSignature(system1Id), 0); //0000
-
-      var signature = world.createSignature([component1Id, component2Id]);
-      var system2Id = world.registerSystem<System2>(() => System2(), signature: signature);
-      expect(world.systemManager.size, 2);
-      expect(world.systemManager.getSignature(system2Id), 3); //0011
+      expect(ecs.systemManager.size, 0);
+      var system1Id = ecs.registerSystem<System1>(() => System1());
+      expect(ecs.systemManager.size, 1);
+      expect(ecs.systemManager.getSignature(system1Id), 0); //0000
+      //
+      var signature = ecs.createSignature([component1Id, component2Id]);
+      var system2Id = ecs.registerSystem<System2>(() => System2(), signature: signature);
+      expect(ecs.systemManager.size, 2);
+      expect(ecs.systemManager.getSignature(system2Id), 3); //0011
     });
   });
 
   group('ECS', () {
     setUp(() {
-      maxEntity = 10;
-      world = Ecs(maxEntity: maxEntity);
-      component1Id = world.registerComponent<Component1>((int index) => Component1(), 32);
-      component2Id = world.registerComponent<Component2>((int index) => Component2(), 32);
+      ecs = Ecs(maxEntity: 10);
+      component1Id = ecs.registerComponent<Component1>((int index) => Component1(), 32);
+      component2Id = ecs.registerComponent<Component2>((int index) => Component2(), 32);
     });
 
     test('createEntity', () {
-      expect(world.entityManager.size, 0);
-      Entity entity = world.createEntity();
+      expect(ecs.entityManager.size, 0);
+      Entity entity = ecs.createEntity();
       expect(entity, 0);
-      expect(world.entityManager.size, 1);
+      expect(ecs.entityManager.size, 1);
+      //
+      Entity entity2 = ecs.createEntity();
+      expect(entity2, 1);
+      expect(ecs.entityManager.size, 2);
     });
 
     test('destroyEntity', () {
-      Entity entity = world.createEntity();
-      expect(world.entityManager.size, 1);
-      world.destroyEntity(entity);
-      expect(world.entityManager.size, 0);
+      Entity entity1 = ecs.createEntity();
+      Entity entity2 = ecs.createEntity();
+      expect(ecs.entityManager.size, 2);
+      ecs.destroyEntity(entity1);
+      expect(ecs.entityManager.size, 1);
+      ecs.destroyEntity(entity2);
+      expect(ecs.entityManager.size, 0);
     });
 
     test('addComponent', () {
-      Entity entity = world.createEntity();
-      expect(world.hasComponent(component1Id, entity), false);
-      expect(world.hasComponent(component2Id, entity), false);
+      Entity entity = ecs.createEntity();
+      expect(ecs.hasComponent(component1Id, entity), false);
+      expect(ecs.hasComponent(component2Id, entity), false);
 
-      world.addComponent(component1Id, entity);
-      expect(world.hasComponent(component1Id, entity), true);
+      ecs.addComponent(component1Id, entity);
+      expect(ecs.hasComponent(component1Id, entity), true);
       expect(
-          world.componentManager
+          ecs.componentManager
               .getArray(
                 component1Id,
               )
               .size,
           1);
 
-      world.addComponent(component2Id, entity);
-      expect(world.hasComponent(component2Id, entity), true);
-      expect(world.componentManager.getArray(component2Id).size, 1);
+      ecs.addComponent(component2Id, entity);
+      expect(ecs.hasComponent(component2Id, entity), true);
+      expect(ecs.componentManager.getArray(component2Id).size, 1);
     });
 
     test('removeComponent', () {
-      Entity entity = world.createEntity();
-      world.addComponent(component1Id, entity);
-      world.addComponent(component2Id, entity);
-      expect(world.hasComponent(component1Id, entity), true);
-      expect(world.hasComponent(component2Id, entity), true);
+      Entity entity = ecs.createEntity();
+      ecs.addComponent(component1Id, entity);
+      ecs.addComponent(component2Id, entity);
+      expect(ecs.hasComponent(component1Id, entity), true);
+      expect(ecs.hasComponent(component2Id, entity), true);
 
-      world.removeComponent(component1Id, entity);
-      expect(world.hasComponent(component1Id, entity), false);
-      expect(world.componentManager.getArray(component1Id).size, 0);
+      ecs.removeComponent(component1Id, entity);
+      expect(ecs.hasComponent(component1Id, entity), false);
+      expect(ecs.componentManager.getArray(component1Id).size, 0);
 
-      world.removeComponent(component2Id, entity);
-      expect(world.hasComponent(component2Id, entity), false);
-      expect(world.componentManager.getArray(component2Id).size, 0);
+      ecs.removeComponent(component2Id, entity);
+      expect(ecs.hasComponent(component2Id, entity), false);
+      expect(ecs.componentManager.getArray(component2Id).size, 0);
     });
 
     test('getSignature', () {
-      Entity entity = world.createEntity();
-      expect(world.entityManager.getSignature(entity), 0); //0000
-      world.addComponent(component1Id, entity);
-      expect(world.entityManager.getSignature(entity), 1); //0001
-      world.addComponent(component2Id, entity);
-      expect(world.entityManager.getSignature(entity), 3); //0011
+      Entity entity = ecs.createEntity();
+      expect(ecs.entityManager.getSignature(entity), 0); //0000
+      ecs.addComponent(component1Id, entity);
+      expect(ecs.entityManager.getSignature(entity), 1); //0001
+      ecs.addComponent(component2Id, entity);
+      expect(ecs.entityManager.getSignature(entity), 3); //0011
 
-      world.removeComponent(component1Id, entity);
-      expect(world.entityManager.getSignature(entity), 2); //0010
-      world.removeComponent(component2Id, entity);
-      expect(world.entityManager.getSignature(entity), 0); //0000
+      ecs.removeComponent(component1Id, entity);
+      expect(ecs.entityManager.getSignature(entity), 2); //0010
+      ecs.removeComponent(component2Id, entity);
+      expect(ecs.entityManager.getSignature(entity), 0); //0000
     });
   });
 }
