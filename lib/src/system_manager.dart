@@ -6,14 +6,14 @@ import 'types.dart';
 
 class SystemManager {
   final int capacity;
-  final int maxEntity;
+  final int maxEntities;
   final List<EcsSystem> systems = [];
   final Uint64List signatures;
   final List<SetEntity> systemEntities = [];
-  final List<Type> registerTypes = [];
+  final List<Type> registerTypes = []; //helper
   SystemId _nextIndex = 0;
 
-  SystemManager(this.capacity, this.maxEntity) : signatures = Uint64List(capacity);
+  SystemManager(this.capacity, this.maxEntities) : signatures = Uint64List(capacity);
 
   int get size => systems.length;
 
@@ -22,7 +22,7 @@ class SystemManager {
     systems.add(system);
     var index = _nextIndex;
     registerTypes.add(T);
-    systemEntities.add(SetEntity(maxEntity));
+    systemEntities.add(SetEntity(maxEntities));
     _nextIndex++;
     return index;
   }
@@ -32,7 +32,7 @@ class SystemManager {
     return signatures[systemId];
   }
 
-  void setSystemSignature(SystemId systemId, Signature signature) {
+  void setSignature(SystemId systemId, Signature signature) {
     assert(systemId < size, 'System out of range.');
     signatures[systemId] = signature;
   }

@@ -21,7 +21,7 @@ class Ecs {
   SystemId registerSystem<T extends EcsSystem>(T Function() creator, {Signature signature = 0}) {
     var system = creator();
     var systemId = systemManager.register<T>(system);
-    systemManager.setSystemSignature(systemId, signature);
+    systemManager.setSignature(systemId, signature);
     system.init(this, signature);
     return systemId;
   }
