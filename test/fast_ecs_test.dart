@@ -86,6 +86,18 @@ void main() {
       expect(ecs.componentManager.getArray(component2Id).size, 1);
     });
 
+    test('addComponents', () {
+      Entity entity = ecs.createEntity();
+      expect(ecs.hasComponent(component1Id, entity), false);
+      expect(ecs.hasComponent(component2Id, entity), false);
+
+      ecs.addComponents([component1Id, component2Id], entity);
+      expect(ecs.hasComponent(component1Id, entity), true);
+      expect(ecs.hasComponent(component2Id, entity), true);
+      expect(ecs.componentManager.getArray(component1Id).size, 1);
+      expect(ecs.componentManager.getArray(component2Id).size, 1);
+    });
+
     test('removeComponent', () {
       Entity entity = ecs.createEntity();
       ecs.addComponent(component1Id, entity);

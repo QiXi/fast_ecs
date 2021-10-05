@@ -60,7 +60,7 @@ class Ecs {
   }
 
   void addComponent(ComponentId id, Entity entity) {
-    var signature = entityManager.getSignature(entity);
+    final signature = entityManager.getSignature(entity);
     if (!containsComponentId(signature, id)) {
       componentManager.addComponent(id, entity);
       var newSignature = signature | 1 << id; // enable
@@ -69,6 +69,20 @@ class Ecs {
     } else {
       print('Component added to same entity more than once.');
     }
+  }
+
+  void addComponents(List<ComponentId> list, Entity entity) {
+    final signature = entityManager.getSignature(entity);
+    var newSignature = signature;
+    for (int i = 0; i < list.length; i++) {
+      var id = list[i];
+      if (!containsComponentId(signature, id)) {
+        componentManager.addComponent(id, entity);
+        newSignature |= 1 << id; // enable
+      }
+    }
+    entityManager.setSignature(entity, newSignature);
+    systemManager.entitySignatureChanged(entity, signature, newSignature);
   }
 
   void removeComponent(ComponentId id, Entity entity) {
