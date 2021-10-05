@@ -11,7 +11,11 @@ Creating a `VelocityComponent` class
 class VelocityComponent extends Component {
   double velocity = 2;
 }
+```
 
+Creating a `TransformComponent` class
+
+```dart
 class TransformComponent extends Component {
   double rotation = 0.0;
   double scale = 0.5;
@@ -45,7 +49,7 @@ class RotationSystem extends UpdateEcsSystem {
 }
 ```
 
-Ecs
+Entity Component System
 ---
 Creating a `Ecs` class
 
@@ -55,7 +59,7 @@ Ecs ecs = Ecs(maxEntity: maxEntity, maxComponents: 8);
 ComponentId transformId = ecs.registerComponent<TransformComponent>((index) => TransformComponent(), maxEntity);
 ComponentId velocityId = ecs.registerComponent<VelocityComponent>((index) => VelocityComponent(), maxEntity);
 var rotationSystemSignature = ecs.createSignature([transformId, velocityId]);
-// register [RotationSystem] with signature
+// register RotationSystem with signature
 ecs.registerSystem<RotationSystem>(() => RotationSystem(), signature: rotationSystemSignature);
 ```
 
@@ -74,13 +78,16 @@ Usage
 update `ECS`
 
 ```dart
-// update
 ecs.update(deltaTime);
+```
 
-// render
-abstract class RenderEcsSystem extends EcsSystem {
-  void render(Canvas canvas, SetEntity entities);
+render `ECS`
+
+```dart
+class RenderEcsSystem extends EcsSystem {
+  void render(Canvas canvas, SetEntity entities){};
 }
+
 var systems = ecs.systemManager.systems;
 for (int id = 0; id < systems.length; id++) {
   var system = systems[id];
