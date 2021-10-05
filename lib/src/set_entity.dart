@@ -18,9 +18,9 @@ class SetEntity {
     _nextIndex = 0;
   }
 
-  Entity get(int index) {
-    return entityByIndex[index];
-  }
+  operator [](int index) => entityByIndex[index];
+
+  Entity get(int index) => entityByIndex[index];
 
   void add(Entity entity) {
     var newIndex = _nextIndex;
