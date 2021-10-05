@@ -23,8 +23,8 @@ Creating a `RotationSystem` class
 
 ```dart
 class RotationSystem extends UpdateEcsSystem {
-  late List<Component> transformComponents; // quick link
-  late List<Component> velocityComponents; // quick link
+  late List<TransformComponent> transformComponents; // quick link
+  late List<VelocityComponent> velocityComponents; // quick link
 
   @override
   void init(ecs, Signature signature) {
@@ -36,9 +36,9 @@ class RotationSystem extends UpdateEcsSystem {
   void update(double deltaTime, SetEntity entities) {
     for (var i = 0; i < entities.size; i++) {
       Entity entity = entities.get(i);
-      TransformComponent transform = transformComponents[entity] as TransformComponent;
-      VelocityComponent rotation = velocityComponents[entity] as VelocityComponent;
-      transform.rotation += rotation.velocity * deltaTime;
+      TransformComponent transform = transformComponents[entity];
+      VelocityComponent velocity = velocityComponents[entity];
+      transform.rotation += velocity.velocity * deltaTime;
     }
   }
 }

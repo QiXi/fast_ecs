@@ -9,7 +9,7 @@ Simple and fast Entity-Component-System (ECS) library written in Dart.
 ## CPU Flame Chart
 
 * device Nexus 5 (2014) android 6.0.1
-* fast_ecs version 0.0.0
+* fast_ecs version 0.0.1
 * all Time 10500(ms)
 * 1024 entities
 
@@ -19,8 +19,8 @@ RotationSystem
 void update(double deltaTime, SetEntity entities) {
     for (var i = 0; i < entities.size; i++) {
       Entity entity = entities[i];
-      TransformComponent transform = transformComponents[entity] as TransformComponent;
-      VelocityComponent rotation = velocityComponents[entity] as VelocityComponent;
+      TransformComponent transform = transformComponents[entity];
+      VelocityComponent rotation = velocityComponents[entity];
       transform.rotation += rotation.velocity * deltaTime;
       transform.dirty = true;
     }

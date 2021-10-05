@@ -54,9 +54,9 @@ class Ecs {
     return componentManager.getComponentId<T>();
   }
 
-  List<Component> getComponentList<T extends Component>() {
+  List<T> getComponentList<T extends Component>() {
     var id = findComponentId<T>();
-    return componentManager.getArray(id).data;
+    return componentManager.getArray(id).data as List<T>;
   }
 
   void addComponent(ComponentId id, Entity entity) {
