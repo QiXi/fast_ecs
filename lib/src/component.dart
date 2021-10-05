@@ -1,3 +1,3 @@
 abstract class Component {
-  void reset();
+  //void reset();
 }

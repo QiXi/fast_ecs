@@ -32,9 +32,12 @@ class Ecs {
 
   void destroyEntity(Entity entity) {
     var signature = entityManager.getSignature(entity);
-    entityManager.destroyEntity(entity);
-    componentManager.entityDestroyed(entity, signature);
-    systemManager.entityDestroyed(entity);
+    var isAlive = (signature & aliveComponentId) == 1;
+    if (isAlive) {
+      entityManager.destroyEntity(entity);
+      componentManager.entityDestroyed(entity, signature);
+      systemManager.entityDestroyed(entity);
+    }
   }
 
   ComponentId registerComponent<T extends Component>(T Function(int index) creator, int capacity) {
@@ -98,7 +101,7 @@ class Ecs {
   }
 
   Signature createSignature(List<ComponentId> list) {
-    Signature signature = 0;
+    Signature signature = aliveComponentId;
     for (int i = 0; i < list.length; i++) {
       signature |= 1 << list[i]; //enable
     }

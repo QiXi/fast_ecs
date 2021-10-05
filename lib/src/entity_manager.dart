@@ -17,15 +17,17 @@ class EntityManager {
 
   Entity createEntity() {
     assert(_nextIndex < capacity, 'Too many entities in existence.');
-    Entity id = availableEntities.removeFirst();
+    Entity entity = availableEntities.removeFirst();
+    signatures[entity] = 1; // alive
     _nextIndex++;
-    return id;
+    return entity;
   }
 
   void destroyEntity(Entity entity) {
     assert(entity < capacity, 'Entity out of range.');
+    assert((signatures[entity] & aliveComponentId) == 1, 'Entity dead.');
     availableEntities.addLast(entity);
-    signatures[entity] = 0; // disable
+    signatures[entity] = 0; // dead
     _nextIndex--;
   }
 

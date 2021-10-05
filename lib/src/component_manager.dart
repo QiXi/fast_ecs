@@ -6,18 +6,20 @@ class ComponentManager {
   final int defaultCapacity;
   final List<ComponentArray> componentArrays = [];
   final List<Type> registerTypes = [];
-  ComponentId _nextComponentIndex = 0;
+  ComponentId _nextIndex = 0;
 
-  ComponentManager(this.defaultCapacity);
+  ComponentManager(this.defaultCapacity) {
+    register((index) => AliveComponent(), 0);
+  }
 
   int get size => registerTypes.length;
 
   ComponentId register<T extends Component>(T Function(int index) creator, [int? capacity]) {
     assert(!registerTypes.contains(T), 'Registering component type more than once.');
-    var index = _nextComponentIndex;
+    var index = _nextIndex;
     componentArrays.add(ComponentArray<T>(capacity ?? defaultCapacity, creator));
     registerTypes.add(T);
-    _nextComponentIndex++;
+    _nextIndex++;
     return index;
   }
 
@@ -56,3 +58,5 @@ class ComponentManager {
     return 'ComponentManager{size:$size $registerTypes}';
   }
 }
+
+class AliveComponent extends Component {}
