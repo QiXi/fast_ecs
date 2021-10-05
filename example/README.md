@@ -1,5 +1,6 @@
 Fast ECS Examples
 ==========================
+Simple and fast Entity-Component-System (ECS) library written in Dart.
 
 
 Components
@@ -73,6 +74,18 @@ Usage
 update `ECS`
 
 ```dart
-//
+// update
 ecs.update(deltaTime);
+
+// render
+abstract class RenderEcsSystem extends EcsSystem {
+  void render(Canvas canvas, SetEntity entities);
+}
+var systems = ecs.systemManager.systems;
+for (int id = 0; id < systems.length; id++) {
+  var system = systems[id];
+  if (system is RenderEcsSystem) {
+    system.render(canvas, systemManager.systemEntities[id]);
+  }
+}
 ```

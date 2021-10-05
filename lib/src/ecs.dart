@@ -118,16 +118,6 @@ class Ecs {
     }
   }
 
-  void render() {
-    var systems = systemManager.systems;
-    for (int id = 0; id < systems.length; id++) {
-      var system = systems[id];
-      if (system is RenderEcsSystem) {
-        system.render(systemManager.systemEntities[id]);
-      }
-    }
-  }
-
   @override
   String toString() {
     return 'Ecs{$componentManager $entityManager $systemManager}';

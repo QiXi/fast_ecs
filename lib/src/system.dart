@@ -9,7 +9,3 @@ abstract class EcsSystem {
 abstract class UpdateEcsSystem extends EcsSystem {
   void update(double deltaTime, SetEntity entities);
 }
-
-abstract class RenderEcsSystem extends EcsSystem {
-  void render(SetEntity entities);
-}
