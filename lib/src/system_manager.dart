@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:meta/meta.dart';
+
 import 'set_entity.dart';
 import 'system.dart';
 import 'types.dart';
@@ -37,12 +39,15 @@ class SystemManager {
     signatures[systemId] = signature;
   }
 
+  @internal
   void entityDestroyed(Entity entity) {
-    for (var entities in systemEntities) {
-      entities.remove(entity);
+    final length = systemEntities.length;
+    for (var id = 0; id < length; id++) {
+      systemEntities[id].remove(entity);
     }
   }
 
+  @internal
   void entitySignatureChanged(
       Entity entity, Signature entityOldSignature, Signature entityNewSignature) {
     final length = systemEntities.length;

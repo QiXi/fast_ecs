@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:meta/meta.dart';
+
 import 'component.dart';
 import 'types.dart';
 
@@ -43,6 +45,7 @@ class ComponentArray<T extends Component> {
     _nextIndex--;
   }
 
+  @internal
   void entityDestroyed(Entity entity) {
     if (entity < _nextIndex) {
       remove(entity);

@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:meta/meta.dart';
+
 import 'types.dart';
 
 class SetEntity {
@@ -22,6 +24,7 @@ class SetEntity {
 
   Entity get(int index) => entityByIndex[index];
 
+  @internal
   void add(Entity entity) {
     var newIndex = _nextIndex;
     indexByEntity[entity] = newIndex;
@@ -29,6 +32,7 @@ class SetEntity {
     _nextIndex++;
   }
 
+  @internal
   void remove(Entity entity) {
     var indexOfRemovedEntity = indexByEntity[entity];
     var indexOfLastElement = _nextIndex - 1;

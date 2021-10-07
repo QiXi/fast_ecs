@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 import 'component.dart';
 import 'component_array.dart';
 import 'types.dart';
@@ -45,6 +47,7 @@ class ComponentManager {
     getArray(id).remove(entity);
   }
 
+  @internal
   void entityDestroyed(Entity entity, Signature signature) {
     for (var id = 0; id < size; id++) {
       if (signature & 1 << id == 1) {
