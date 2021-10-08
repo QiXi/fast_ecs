@@ -74,11 +74,11 @@ class Ecs {
     }
   }
 
-  void addComponents(List<ComponentId> list, Entity entity) {
+  void addComponents(List<ComponentId> ids, Entity entity) {
     final signature = entityManager.getSignature(entity);
     var newSignature = signature;
-    for (int i = 0; i < list.length; i++) {
-      var id = list[i];
+    for (int i = 0, length = ids.length; i < length; i++) {
+      var id = ids[i];
       if (!containsComponentId(signature, id)) {
         componentManager.addComponent(id, entity);
         newSignature |= 1 << id; // enable
@@ -101,8 +101,8 @@ class Ecs {
   }
 
   Signature createSignature(List<ComponentId> list) {
-    Signature signature = 1; //aliveComponentId
-    for (int i = 0; i < list.length; i++) {
+    Signature signature = 1 << aliveComponentId;
+    for (int i = 0, length = list.length; i < length; i++) {
       signature |= 1 << list[i]; //enable
     }
     return signature;
@@ -110,7 +110,7 @@ class Ecs {
 
   void update(double deltaTime) {
     var systems = systemManager.systems;
-    for (int id = 0; id < systems.length; id++) {
+    for (int id = 0, length = systems.length; id < length; id++) {
       var system = systems[id];
       if (system is UpdateEcsSystem) {
         system.update(deltaTime, systemManager.systemEntities[id]);

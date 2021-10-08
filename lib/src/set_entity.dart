@@ -41,4 +41,9 @@ class SetEntity {
     entityByIndex[indexOfRemovedEntity] = entityOfLastElement;
     _nextIndex--;
   }
+
+  @override
+  String toString() {
+    return 'SetEntity{ size:$size capacity:$capacity ${entityByIndex.sublist(0, size)}}';
+  }
 }

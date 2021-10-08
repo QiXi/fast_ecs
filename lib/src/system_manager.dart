@@ -48,17 +48,15 @@ class SystemManager {
   }
 
   @internal
-  void entitySignatureChanged(
-      Entity entity, Signature entityOldSignature, Signature entityNewSignature) {
-    final length = systemEntities.length;
-    for (var id = 0; id < length; id++) {
-      var systemSignature = signatures[id];
-      var prevAdded = (entityOldSignature & systemSignature) == systemSignature;
-      var nextAdded = (entityNewSignature & systemSignature) == systemSignature;
+  void entitySignatureChanged(Entity entity, Signature oldSignature, Signature newSignature) {
+    for (var systemId = 0, length = size; systemId < length; systemId++) {
+      var systemSignature = signatures[systemId];
+      var prevAdded = (oldSignature & systemSignature) == systemSignature;
+      var nextAdded = (newSignature & systemSignature) == systemSignature;
       if (!prevAdded && nextAdded) {
-        systemEntities[id].add(entity);
+        systemEntities[systemId].add(entity);
       } else if (prevAdded && !nextAdded) {
-        systemEntities[id].remove(entity);
+        systemEntities[systemId].remove(entity);
       }
     }
   }
