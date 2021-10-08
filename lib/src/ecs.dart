@@ -22,8 +22,12 @@ class Ecs {
     var system = creator();
     var systemId = systemManager.register<T>(system);
     systemManager.setSignature(systemId, signature);
-    system.init(this, signature);
+    system.register(this, signature);
     return systemId;
+  }
+
+  void init() {
+    systemManager.init();
   }
 
   Entity createEntity() {
@@ -120,6 +124,7 @@ class Ecs {
 
   @override
   String toString() {
-    return 'Ecs{$componentManager $entityManager $systemManager}';
+    return 'Ecs{ maxEntity:$maxEntity maxComponents:$maxComponents'
+        ' $componentManager $entityManager $systemManager}';
   }
 }

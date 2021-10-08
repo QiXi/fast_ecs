@@ -161,13 +161,13 @@ class Component2 extends Component {}
 
 class System1 extends UpdateEcsSystem {
   @override
-  void init(Ecs ecs, Signature signature) {}
+  void update(double deltaTime, SetEntity entities) {}
 
   @override
-  void update(double deltaTime, SetEntity entities) {}
+  void init() {}
 }
 
 class System2 extends EcsSystem {
   @override
-  void init(Ecs ecs, Signature signature) {}
+  void init() {}
 }

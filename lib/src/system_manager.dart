@@ -29,6 +29,12 @@ class SystemManager {
     return index;
   }
 
+  void init() {
+    for (var id = 0, length = systems.length; id < length; id++) {
+      systems[id].init();
+    }
+  }
+
   Signature getSignature(SystemId systemId) {
     assert(systemId < size, 'System out of range.');
     return signatures[systemId];
@@ -41,8 +47,7 @@ class SystemManager {
 
   @internal
   void entityDestroyed(Entity entity) {
-    final length = systemEntities.length;
-    for (var id = 0; id < length; id++) {
+    for (var id = 0, length = systemEntities.length; id < length; id++) {
       systemEntities[id].remove(entity);
     }
   }
@@ -63,6 +68,6 @@ class SystemManager {
 
   @override
   String toString() {
-    return 'SystemManager{capacity:$capacity size:$size systems:$systems}';
+    return 'SystemManager{ size:$size capacity:$capacity systems:$systems}';
   }
 }
