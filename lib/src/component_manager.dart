@@ -30,6 +30,20 @@ class ComponentManager {
     return registerTypes.indexOf(T);
   }
 
+  ComponentId getComponentIdFrom(Type type) {
+    assert(registerTypes.contains(type), '$type not registered before use.');
+    return registerTypes.indexOf(type);
+  }
+
+  List<ComponentId> getComponentIdList(List<Type> components) {
+    List<ComponentId> result = [];
+    for (var i = 0; i < components.length; i++) {
+      Type type = components[i].runtimeType;
+      result.add(registerTypes.indexOf(type));
+    }
+    return result;
+  }
+
   ComponentArray getArray(ComponentId id) {
     assert(id < size, 'Component not registered before use.');
     return componentArrays[id];
