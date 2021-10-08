@@ -130,6 +130,28 @@ void main() {
       ecs.removeComponent(component2Id, entity);
       expect(ecs.entityManager.getSignature(entity), 1); //0001
     });
+
+    test('systemEntities', () {
+      var signature = ecs.createSignature([component1Id]);
+      var system1Id = ecs.registerSystem<System1>(() => System1(), signature: signature);
+      expect(ecs.systemManager.getSignature(0), 3); //0011
+      var signature2 = ecs.createSignature([component1Id, component2Id]);
+      var system2Id = ecs.registerSystem<System2>(() => System2(), signature: signature2);
+      expect(ecs.systemManager.getSignature(1), 7); //0111
+      //
+      Entity entity1 = ecs.createEntity();
+      ecs.addComponent(component1Id, entity1);
+      Entity entity2 = ecs.createEntity();
+      ecs.addComponent(component1Id, entity2);
+      ecs.addComponents([component1Id, component2Id], entity2);
+      //
+      expect(ecs.systemManager.systemEntities[system1Id].size, 2);
+      expect(ecs.systemManager.systemEntities[system2Id].size, 1);
+      ecs.removeComponent(component1Id, entity1);
+      ecs.removeComponent(component1Id, entity2);
+      expect(ecs.systemManager.systemEntities[system1Id].size, 0);
+      expect(ecs.systemManager.systemEntities[system2Id].size, 0);
+    });
   });
 }
 
