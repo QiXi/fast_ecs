@@ -32,7 +32,7 @@ class Ecs {
 
   void destroyEntity(Entity entity) {
     var signature = entityManager.getSignature(entity);
-    var isAlive = (signature & aliveComponentId) == 1;
+    var isAlive = (signature & 1 << aliveComponentId) == 1;
     if (isAlive) {
       entityManager.destroyEntity(entity);
       componentManager.entityDestroyed(entity, signature);
@@ -101,7 +101,7 @@ class Ecs {
   }
 
   Signature createSignature(List<ComponentId> list) {
-    Signature signature = aliveComponentId;
+    Signature signature = 1; //aliveComponentId
     for (int i = 0; i < list.length; i++) {
       signature |= 1 << list[i]; //enable
     }

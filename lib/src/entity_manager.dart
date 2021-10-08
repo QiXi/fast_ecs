@@ -25,7 +25,7 @@ class EntityManager {
 
   void destroyEntity(Entity entity) {
     assert(entity < capacity, 'Entity out of range.');
-    assert((signatures[entity] & aliveComponentId) == 1, 'Entity dead.');
+    assert((signatures[entity] & 1 << aliveComponentId) == 1, 'Entity dead.');
     availableEntities.addLast(entity);
     signatures[entity] = 0; // dead
     _nextIndex--;

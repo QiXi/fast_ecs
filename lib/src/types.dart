@@ -6,4 +6,4 @@ typedef SystemId = int;
 
 typedef Signature = int;
 
-const int aliveComponentId = 1;
+const int aliveComponentId = 0;

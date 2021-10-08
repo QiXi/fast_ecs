@@ -33,7 +33,7 @@ class ComponentArray<T extends Component> {
   }
 
   void remove(Entity entity) {
-    assert(entity < size, 'Entity out of range.');
+    assert(entity < capacity, 'Entity out of range.');
     var indexOfRemovedEntity = entityToIndexList[entity];
     var indexOfLastElement = _nextIndex - 1;
     var removedComponent = data[indexOfRemovedEntity];
