@@ -38,7 +38,7 @@ class ComponentManager {
   List<ComponentId> getComponentIdList(List<Type> components) {
     List<ComponentId> result = [];
     for (var i = 0; i < components.length; i++) {
-      Type type = components[i].runtimeType;
+      Type type = components[i];
       result.add(registerTypes.indexOf(type));
     }
     return result;
