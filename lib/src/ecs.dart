@@ -18,9 +18,10 @@ class Ecs {
         entityManager = EntityManager(maxEntity),
         systemManager = SystemManager(maxSystems, maxEntity);
 
-  SystemId registerSystem<T extends EcsSystem>(T Function() creator, {Signature signature = 0}) {
+  SystemId registerSystem<T extends EcsSystem>(T Function() creator,
+      {Signature signature = 0, required SystemPhases phase}) {
     var system = creator();
-    var systemId = systemManager.register<T>(system);
+    var systemId = systemManager.register<T>(system, phase);
     systemManager.setSignature(systemId, signature);
     system.register(this, signature);
     return systemId;
@@ -28,6 +29,14 @@ class Ecs {
 
   void init() {
     systemManager.init();
+  }
+
+  void enableSystem(SystemId systemId, SystemPhases phase) {
+    systemManager.enable(systemId, phase.index);
+  }
+
+  void disableSystem(SystemId systemId) {
+    systemManager.disable(systemId);
   }
 
   Entity createEntity() {
@@ -114,10 +123,12 @@ class Ecs {
 
   void update(double deltaTime) {
     var systems = systemManager.systems;
-    for (int id = 0, length = systems.length; id < length; id++) {
-      var system = systems[id];
+    var activeSystems = systemManager.systemSet;
+    for (int i = 0, size = activeSystems.size; i < size; i++) {
+      var systemId = activeSystems[i];
+      var system = systems[systemId];
       if (system is UpdateEcsSystem) {
-        system.update(deltaTime, systemManager.systemEntities[id]);
+        system.update(deltaTime, systemManager.systemEntities[i]);
       }
     }
   }

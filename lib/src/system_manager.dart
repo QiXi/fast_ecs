@@ -2,8 +2,9 @@ import 'dart:typed_data';
 
 import 'package:meta/meta.dart';
 
-import 'set_entity.dart';
+import 'set.dart';
 import 'system.dart';
+import 'system_set.dart';
 import 'types.dart';
 
 class SystemManager {
@@ -11,28 +12,43 @@ class SystemManager {
   final int maxEntities;
   final List<EcsSystem> systems = [];
   final Uint64List signatures;
-  final List<SetEntity> systemEntities = [];
+  final SystemSet systemSet;
+  final List<Uint16Set> systemEntities = [];
   final List<Type> registerTypes = []; //helper
   SystemId _nextIndex = 0;
 
-  SystemManager(this.capacity, this.maxEntities) : signatures = Uint64List(capacity);
+  SystemManager(this.capacity, this.maxEntities)
+      : signatures = Uint64List(capacity),
+        systemSet = SystemSet(capacity);
 
   int get size => systems.length;
 
-  SystemId register<T extends EcsSystem>(EcsSystem system) {
+  SystemId register<T extends EcsSystem>(EcsSystem system, SystemPhases phase) {
+    assert(_nextIndex < capacity, 'Too many systems in existence.');
     assert(!registerTypes.contains(T), 'Registering system more than once.');
     systems.add(system);
-    var index = _nextIndex;
+    var systemId = _nextIndex;
     registerTypes.add(T);
-    systemEntities.add(SetEntity(maxEntities));
+    systemEntities.add(Uint16Set(maxEntities));
+    systemSet.add(systemId, phase.index);
     _nextIndex++;
-    return index;
+    return systemId;
   }
 
   void init() {
-    for (var id = 0, length = systems.length; id < length; id++) {
-      systems[id].init();
+    for (int i = 0, size = systemSet.size; i < size; i++) {
+      var systemId = systemSet[i];
+      print('init: systemId:$systemId ${systems[systemId]}');
+      systems[systemId].init();
     }
+  }
+
+  void enable(SystemId systemId, PhaseIndex phase) {
+    systemSet.add(systemId, phase);
+  }
+
+  void disable(SystemId systemId) {
+    systemSet.remove(systemId);
   }
 
   Signature getSignature(SystemId systemId) {

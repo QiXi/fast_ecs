@@ -27,12 +27,13 @@ void main() {
       ecs.registerComponent<Component2>((int index) => Component2(), 32);
       //
       expect(ecs.systemManager.size, 0);
-      var system1Id = ecs.registerSystem<System1>(() => System1());
+      var system1Id = ecs.registerSystem<System1>(() => System1(), phase: SystemPhases.begin);
       expect(ecs.systemManager.size, 1);
       expect(ecs.systemManager.getSignature(system1Id), 0); //0000
       //
       var signature = ecs.createSignature([component1Id, component2Id]);
-      var system2Id = ecs.registerSystem<System2>(() => System2(), signature: signature);
+      var system2Id = ecs.registerSystem<System2>(() => System2(),
+          signature: signature, phase: SystemPhases.begin);
       expect(ecs.systemManager.size, 2);
       expect(ecs.systemManager.getSignature(system2Id), 7); //0111
     });
@@ -133,10 +134,12 @@ void main() {
 
     test('systemEntities', () {
       var signature = ecs.createSignature([component1Id]);
-      var system1Id = ecs.registerSystem<System1>(() => System1(), signature: signature);
+      var system1Id = ecs.registerSystem<System1>(() => System1(),
+          signature: signature, phase: SystemPhases.begin);
       expect(ecs.systemManager.getSignature(0), 3); //0011
       var signature2 = ecs.createSignature([component1Id, component2Id]);
-      var system2Id = ecs.registerSystem<System2>(() => System2(), signature: signature2);
+      var system2Id = ecs.registerSystem<System2>(() => System2(),
+          signature: signature2, phase: SystemPhases.begin);
       expect(ecs.systemManager.getSignature(1), 7); //0111
       //
       Entity entity1 = ecs.createEntity();
@@ -152,6 +155,45 @@ void main() {
       expect(ecs.systemManager.systemEntities[system1Id].size, 0);
       expect(ecs.systemManager.systemEntities[system2Id].size, 0);
     });
+
+    test('SystemSet', () {
+      var set = SystemSet(10);
+      set.add(100, 10);
+      set.add(102, 1);
+      expect(set.size, 2);
+      expect(set.systemIds.sublist(0, 2), [102, 100]);
+      expect(set.systemPhases.sublist(0, 2), [1, 10]);
+      set.remove(100);
+      set.remove(102);
+      expect(set.size, 0);
+      //
+      set.add(101, 5);
+      set.add(102, 1);
+      expect(set.size, 2);
+      expect(set.systemIds.sublist(0, 2), [102, 101]);
+      expect(set.systemPhases.sublist(0, 2), [1, 5]);
+      //
+      set.add(116, 6);
+      set.add(100, 0);
+      expect(set.size, 4);
+      expect(set.systemIds.sublist(0, 4), [100, 102, 101, 116]);
+      expect(set.systemPhases.sublist(0, 4), [0, 1, 5, 6]);
+      //
+      set.remove(116);
+      expect(set.systemIds.sublist(0, 3), [100, 102, 101]);
+      expect(set.systemPhases.sublist(0, 3), [0, 1, 5]);
+      //
+      set.remove(100);
+      expect(set.systemIds.sublist(0, 2), [102, 101]);
+      expect(set.systemPhases.sublist(0, 2), [1, 5]);
+      //
+      set.add(102, 1);
+      set.add(116, 6);
+      set.add(100, 0);
+      set.remove(102);
+      expect(set.systemIds.sublist(0, 4), [100, 102, 101, 116]);
+      expect(set.systemPhases.sublist(0, 4), [0, 1, 5, 6]);
+    });
   });
 }
 
@@ -161,7 +203,7 @@ class Component2 extends Component {}
 
 class System1 extends UpdateEcsSystem {
   @override
-  void update(double deltaTime, SetEntity entities) {}
+  void update(double deltaTime, Uint16Set entities) {}
 
   @override
   void init() {}
