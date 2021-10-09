@@ -1,3 +1,4 @@
+import '../fast_ecs.dart';
 import 'component.dart';
 import 'component_manager.dart';
 import 'entity_manager.dart';
@@ -122,14 +123,23 @@ class Ecs {
   }
 
   void update(double deltaTime) {
-    var systems = systemManager.systems;
-    var activeSystems = systemManager.systemSet;
+    final systems = systemManager.systems;
+    final activeSystems = systemManager.systemSet;
     for (int i = 0, size = activeSystems.size; i < size; i++) {
       var systemId = activeSystems[i];
       var system = systems[systemId];
       if (system is UpdateEcsSystem) {
-        system.update(deltaTime, systemManager.systemEntities[i]);
+        system.update(deltaTime, systemManager.systemEntities[systemId]);
       }
+    }
+  }
+
+  void forEach(void Function(EcsSystem element, Uint16Set entities) action) {
+    final systems = systemManager.systems;
+    final activeSystems = systemManager.systemSet;
+    for (int i = 0, size = activeSystems.size; i < size; i++) {
+      var systemId = activeSystems[i];
+      action(systems[systemId], systemManager.systemEntities[systemId]);
     }
   }
 
