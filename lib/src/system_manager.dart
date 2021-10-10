@@ -13,7 +13,7 @@ class SystemManager {
   final List<EcsSystem> systems = [];
   final Uint64List signatures;
   final SystemSet systemSet;
-  final List<Uint16Set> systemEntities = [];
+  final List<EntitySet> systemEntities = [];
   final List<Type> registerTypes = []; //helper
   SystemId _nextIndex = 0;
 
@@ -29,7 +29,7 @@ class SystemManager {
     systems.add(system);
     var systemId = _nextIndex;
     registerTypes.add(T);
-    systemEntities.add(Uint16Set(maxEntities));
+    systemEntities.add(EntitySet(maxEntities));
     systemSet.add(systemId, phase.index);
     _nextIndex++;
     return systemId;

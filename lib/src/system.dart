@@ -1,5 +1,4 @@
 import 'ecs.dart';
-import 'set.dart';
 import 'types.dart';
 
 abstract class EcsSystem {
@@ -11,7 +10,7 @@ abstract class EcsSystem {
 }
 
 abstract class UpdateEcsSystem extends EcsSystem {
-  void update(double deltaTime, Uint16Set entities);
+  void update(double deltaTime, EntitySet entities);
 }
 
 enum SystemPhases {

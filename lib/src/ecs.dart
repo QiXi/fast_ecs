@@ -134,7 +134,7 @@ class Ecs {
     }
   }
 
-  void forEach(void Function(EcsSystem element, Uint16Set entities) action) {
+  void forEach(void Function(EcsSystem element, EntitySet entities) action) {
     final systems = systemManager.systems;
     final activeSystems = systemManager.systemSet;
     for (int i = 0, size = activeSystems.size; i < size; i++) {
