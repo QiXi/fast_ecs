@@ -30,6 +30,11 @@ class ComponentManager {
     return registerTypes.indexOf(T);
   }
 
+  ComponentArray<T> getComponentArray<T extends Component>() {
+    var id = getComponentId<T>();
+    return componentArrays[id] as ComponentArray<T>;
+  }
+
   ComponentId getComponentIdFrom(Type type) {
     assert(registerTypes.contains(type), '$type not registered before use.');
     return registerTypes.indexOf(type);

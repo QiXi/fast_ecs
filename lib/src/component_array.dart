@@ -7,8 +7,11 @@ import 'types.dart';
 
 class ComponentArray<T extends Component> {
   final int capacity;
+  @internal
   final List<T> data;
+  @internal
   final Uint16List entityToIndexList;
+  @internal
   final Uint16List indexToEntityList;
   int _nextIndex = 0;
 
@@ -19,8 +22,8 @@ class ComponentArray<T extends Component> {
 
   int get size => _nextIndex;
 
-  T? getComponent(Entity entity) {
-    assert(entity < size, 'Entity out of range.');
+  T getComponent(Entity entity) {
+    assert(entity < capacity, 'Entity out of range.');
     return data[entityToIndexList[entity]];
   }
 
