@@ -55,7 +55,7 @@ class ComponentManager {
   }
 
   Component? getComponent(ComponentId id, Entity entity) {
-    return getArray(id).getComponent(entity);
+    return getArray(id).get(entity);
   }
 
   void addComponent(ComponentId id, Entity entity) {

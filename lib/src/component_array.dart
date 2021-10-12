@@ -22,10 +22,12 @@ class ComponentArray<T extends Component> {
 
   int get size => _nextIndex;
 
-  T getComponent(Entity entity) {
+  T get(Entity entity) {
     assert(entity < capacity, 'Entity out of range.');
     return data[entityToIndexList[entity]];
   }
+
+  operator [](Entity entity) => data[entityToIndexList[entity]];
 
   void add(Entity entity) {
     assert(_nextIndex < capacity, 'Too many entities in existence.');
