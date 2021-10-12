@@ -14,7 +14,7 @@ class Uint16Set {
 
   int get size => _nextIndex;
 
-  bool get isEmpty => size == 0;
+  bool get isEmpty => _nextIndex == 0;
 
   /// Removes all elements from the set.
   void clear() {

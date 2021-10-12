@@ -2,7 +2,7 @@ import 'ecs.dart';
 import 'types.dart';
 
 abstract class EcsSystem {
-  SystemPhases phase = SystemPhases.begin;
+  SystemPhases phase = SystemPhases.think;
 
   void register(Ecs ecs, Signature signature) {}
 

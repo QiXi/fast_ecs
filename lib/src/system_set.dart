@@ -9,7 +9,7 @@ class SystemSet {
   final Uint16List systemIds;
   final Uint8List systemPhases;
   SystemId _nextIndex = 0;
-  PhaseIndex lastInsertPhase = -1;
+  PhaseIndex _lastInsertPhase = -1;
 
   SystemSet(this.capacity)
       : systemIds = Uint16List(capacity),
@@ -29,11 +29,11 @@ class SystemSet {
 
   int indexOf(SystemId systemId) => systemIds.indexOf(systemId);
 
-  bool _indexWherePhase(PhaseIndex element) => element >= lastInsertPhase;
+  bool _indexWherePhase(PhaseIndex element) => element >= _lastInsertPhase;
 
   @internal
   void add(SystemId systemId, PhaseIndex phase) {
-    lastInsertPhase = phase;
+    _lastInsertPhase = phase;
     var insertIndex = systemPhases.indexWhere(_indexWherePhase);
     if (insertIndex == -1) {
       systemIds[_nextIndex] = systemId;
