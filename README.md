@@ -62,7 +62,18 @@ Demonstration of performance for rotation of 10K entities
 
 ![update 10K sprites](https://user-images.githubusercontent.com/1622824/136676126-28d9d0ee-08a4-42b9-a6aa-a9b8473edaa3.png)
 
-
+### Latency numbers every programmer should know
+    L1 cache reference ......................... 0.5 ns
+    Branch mispredict ............................ 5 ns
+    L2 cache reference ........................... 7 ns
+    Main memory reference ...................... 100 ns             
+    SSD random read ........................ 150,000 ns  = 150 µs
+    Read 1 MB sequentially from memory ..... 250,000 ns  = 250 µs
+    Read 1 MB sequentially from SSD* ..... 1,000,000 ns  =   1 ms
+    Read 1 MB sequentially from disk .... 20,000,000 ns  =  20 ms
+    Send packet CA->Netherlands->CA .... 150,000,000 ns  = 150 ms
+[source](https://gist.github.com/hellerbarde/2843375)
+    
 ## History of creation
 
 The source of inspiration was the
