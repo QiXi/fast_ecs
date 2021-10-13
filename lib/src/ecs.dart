@@ -2,6 +2,7 @@ import '../fast_ecs.dart';
 import 'component.dart';
 import 'component_manager.dart';
 import 'entity_manager.dart';
+import 'object_manager.dart';
 import 'system.dart';
 import 'system_manager.dart';
 import 'types.dart';
@@ -13,11 +14,13 @@ class Ecs {
   final ComponentManager componentManager;
   final EntityManager entityManager;
   final SystemManager systemManager;
+  final ObjectManager objectManager;
 
   Ecs({this.maxEntity = 1024, this.maxComponents = 32, this.maxSystems = 16})
       : componentManager = ComponentManager(maxComponents),
         entityManager = EntityManager(maxEntity),
-        systemManager = SystemManager(maxSystems, maxEntity);
+        systemManager = SystemManager(maxSystems, maxEntity),
+        objectManager = ObjectManager();
 
   SystemId registerSystem<T extends EcsSystem>(T Function() creator,
       {Signature signature = 0, required SystemPhases phase}) {
@@ -73,6 +76,10 @@ class Ecs {
 
   ComponentArray<T> getComponentArray<T extends Component>() {
     return componentManager.getComponentArray<T>();
+  }
+
+  List<T> getComponentList<T extends Component>() {
+    return componentManager.getComponentList<T>();
   }
 
   void addComponent(ComponentId id, Entity entity) {
@@ -140,6 +147,18 @@ class Ecs {
       var systemId = activeSystems[i];
       action(systems[systemId], systemManager.systemEntities[systemId]);
     }
+  }
+
+  int registerObject<T>(T Function(int index) generator, int capacity) {
+    return objectManager.register<T>(generator, capacity);
+  }
+
+  T getObject<T>() {
+    return objectManager.getObject<T>();
+  }
+
+  List<T> getObjectList<T>() {
+    return objectManager.getObjectList<T>();
   }
 
   @override

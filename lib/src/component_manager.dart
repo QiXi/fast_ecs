@@ -14,7 +14,7 @@ class ComponentManager {
     register((index) => AliveComponent(), 0);
   }
 
-  int get size => registerTypes.length;
+  int get size => _nextIndex;
 
   ComponentId register<T extends Component>(T Function(int index) generator, [int? capacity]) {
     assert(!registerTypes.contains(T), 'Registering $T more than once.');
@@ -33,6 +33,11 @@ class ComponentManager {
   ComponentArray<T> getComponentArray<T extends Component>() {
     var id = getComponentId<T>();
     return componentArrays[id] as ComponentArray<T>;
+  }
+
+  List<T> getComponentList<T extends Component>() {
+    var id = getComponentId<T>();
+    return componentArrays[id].data as List<T>;
   }
 
   ComponentId getComponentIdFrom(Type type) {
