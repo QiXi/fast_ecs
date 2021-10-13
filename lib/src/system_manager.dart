@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:meta/meta.dart';
 
-import 'set.dart';
 import 'system.dart';
 import 'system_set.dart';
 import 'types.dart';

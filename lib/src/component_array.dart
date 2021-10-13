@@ -15,8 +15,8 @@ class ComponentArray<T extends Component> {
   final Uint16List indexToEntityList;
   int _nextIndex = 0;
 
-  ComponentArray(this.capacity, T Function(int index) creator)
-      : data = List.generate(capacity, (index) => creator(index), growable: false),
+  ComponentArray(this.capacity, T Function(int index) generator)
+      : data = List.generate(capacity, generator, growable: false),
         entityToIndexList = Uint16List(capacity),
         indexToEntityList = Uint16List(capacity);
 
