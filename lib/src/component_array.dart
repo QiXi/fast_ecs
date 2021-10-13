@@ -29,6 +29,10 @@ class ComponentArray<T extends Component> {
 
   operator [](Entity entity) => data[entityToIndexList[entity]];
 
+  T next() {
+    return data[_nextIndex];
+  }
+
   void add(Entity entity) {
     assert(_nextIndex < capacity, 'Too many entities in existence.');
     var newIndex = _nextIndex;

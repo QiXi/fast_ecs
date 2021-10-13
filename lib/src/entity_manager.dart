@@ -43,6 +43,6 @@ class EntityManager {
 
   @override
   String toString() {
-    return 'EntityManager{capacity:$capacity size:$size}';
+    return 'EntityManager{ size:$size capacity:$capacity}';
   }
 }
