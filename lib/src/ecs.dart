@@ -85,7 +85,7 @@ class Ecs {
   void addComponent(ComponentId id, Entity entity) {
     final signature = entityManager.getSignature(entity);
     if (!containsComponentId(signature, id)) {
-      componentManager.addComponent(id, entity);
+      componentManager.getArray(id).add(entity);
       var newSignature = signature | 1 << id; // enable
       entityManager.setSignature(entity, newSignature);
       systemManager.entitySignatureChanged(entity, signature, newSignature);
@@ -100,7 +100,7 @@ class Ecs {
     for (int i = 0, length = ids.length; i < length; i++) {
       var id = ids[i];
       if (!containsComponentId(signature, id)) {
-        componentManager.addComponent(id, entity);
+        componentManager.getArray(id).add(entity);
         newSignature |= 1 << id; // enable
       }
     }
@@ -111,7 +111,7 @@ class Ecs {
   void removeComponent(ComponentId id, Entity entity) {
     var signature = entityManager.getSignature(entity);
     if (containsComponentId(signature, id)) {
-      componentManager.removeComponent(id, entity);
+      componentManager.getArray(id).remove(entity);
       var newSignature = signature ^ 1 << id; // disable
       entityManager.setSignature(entity, newSignature);
       systemManager.entitySignatureChanged(entity, signature, newSignature);

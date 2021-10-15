@@ -63,6 +63,6 @@ class ComponentArray<T extends Component> {
 
   @override
   String toString() {
-    return 'ComponentArray{capacity:$capacity size:$size}';
+    return 'ComponentArray{ size:$size capacity:$capacity}';
   }
 }

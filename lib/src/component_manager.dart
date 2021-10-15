@@ -63,10 +63,12 @@ class ComponentManager {
     return getArray(id).get(entity);
   }
 
+  @internal
   void addComponent(ComponentId id, Entity entity) {
     getArray(id).add(entity);
   }
 
+  @internal
   void removeComponent(ComponentId id, Entity entity) {
     getArray(id).remove(entity);
   }
