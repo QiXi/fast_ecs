@@ -62,6 +62,14 @@ Demonstration of performance for rotation of 10K entities
 
 ![update 10K sprites](https://user-images.githubusercontent.com/1622824/136676126-28d9d0ee-08a4-42b9-a6aa-a9b8473edaa3.png)
 
+
+## Support
+
+You can support the development of libraries for creating multiplatform games in Flutter:
+
+[![Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/flutterio)
+
+
 ### Latency numbers every programmer should know
     L1 cache reference ......................... 0.5 ns
     Branch mispredict ............................ 5 ns
