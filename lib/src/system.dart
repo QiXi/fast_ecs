@@ -28,7 +28,9 @@ enum SystemPhases {
   postCollision,
   animation,
   postAnimation,
+  layout,
   preDraw,
   draw,
+  composition,
   end,
 }
