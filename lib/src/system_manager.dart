@@ -75,8 +75,10 @@ class SystemManager {
       var nextAdded = (newSignature & systemSignature) == systemSignature;
       if (!prevAdded && nextAdded) {
         systemEntities[systemId].add(entity);
+        systems[systemId].added(entity);
       } else if (prevAdded && !nextAdded) {
         systemEntities[systemId].remove(entity);
+        systems[systemId].removed(entity);
       }
     }
   }

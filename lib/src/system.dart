@@ -7,6 +7,10 @@ abstract class EcsSystem {
   void register(Ecs ecs, Signature signature) {}
 
   void init() {}
+
+  void added(Entity entity) {}
+
+  void removed(Entity entity) {}
 }
 
 abstract class UpdateEcsSystem extends EcsSystem {
